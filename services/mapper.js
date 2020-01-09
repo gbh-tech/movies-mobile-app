@@ -14,10 +14,8 @@ const movieMapper = (response) => {
 }
 
 const getYear = (date) => {
-    if (!!date) {
-        if (date.length > 0) {
-            return date.substring(0, 4);
-        }
+    if (!!date && date.length > 0) {
+        return date.substring(0, 4);
     }
     return "No release date yet"
 }

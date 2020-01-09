@@ -8,7 +8,7 @@ import {queryMovie} from '../../services/movies';
 
 class HomeScreen extends React.Component {
     state = {
-        sort: 'popularity.desc',
+        sort: 'vote_average.desc',
         searchData: [],
         isSearching: false,
         isLoading: true

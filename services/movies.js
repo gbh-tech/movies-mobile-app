@@ -2,7 +2,7 @@ import {API_KEY, API_BASEURL} from 'react-native-dotenv'
 import {movieMapper} from './mapper';
 
 const getMovies = async (page, sort) => {
-    const response = await fetch(`${API_BASEURL}/discover/movie/?api_key=${API_KEY}&sort_by=${sort}&page=${page}`)
+    const response = await fetch(`${API_BASEURL}/movie/?api_key=${API_KEY}&sort_by=${sort}&page=${page}`)
         .then((res) => res.json())
         .then((resJson) => resJson);
     

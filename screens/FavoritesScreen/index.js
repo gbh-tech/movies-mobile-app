@@ -6,7 +6,8 @@ import sortOptions from './sortOptions';
 
 class FavoritesScreen extends React.Component {
     state = {
-        isSearching: false
+        isSearching: false,
+        searchBarVisible: false
     }
 
     handleSearchScreenVisibility = (state) => {
@@ -14,6 +15,23 @@ class FavoritesScreen extends React.Component {
             isSearching: state
         })
     }
+
+    showSearchBar = () => {
+        this.setState({ searchBarVisible: true })
+    }
+
+    hideSearchBar = () => {
+        this.setState({ searchBarVisible: false })
+    }
+
+    toggleSearchBar = () => {
+        this.setState(
+            (prevState) => {
+                return {searchBarVisible: !prevState.searchBarVisible}
+            }
+        )
+    }
+
 
     handleSearchChange = (text) => {
         this.props.searchFavorite(text);
@@ -42,18 +60,21 @@ class FavoritesScreen extends React.Component {
     render() {
         return (
             <>
-                <Header title="Favorites"/>
+                <Header title="Favorites"
+                    toggleSearchBar={this.toggleSearchBar}
+                />
                 <MovieList 
                     data={this.setMovieListData()}
                     toggleFavorite={this.props.toggleFavorite} 
-                    toggleSearchScreenVisibility={this.handleSearchScreenVisibility}
-                    onSearchChange={this.handleSearchChange}
-                    sortOptions={sortOptions}
                     setSorting={this.handleSort}
                     sortMode={this.props.sortMode}
                     isFavorite={this.isFavorite}
+                    searchBarVisible={this.state.searchBarVisible}
+                    showSearchBar={this.showSearchBar}
+                    hideSearchBar={this.hideSearchBar}
                 />
             </>
+
         )
     }
 }

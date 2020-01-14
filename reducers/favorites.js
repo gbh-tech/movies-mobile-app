@@ -44,7 +44,7 @@ const favorites = (state = initialState, action) => {
             return ({
                 ...state,
                 favorites: data,
-                sortMode: action.payload.name
+                sortMode: action.payload.label
             })
         default:
             return state;

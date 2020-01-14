@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import style from './style';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
@@ -8,7 +7,8 @@ import {
     Modal,
     ScrollView,
     Image,
-    View
+    View,
+    TouchableWithoutFeedback
 } from 'react-native';
 
  class MovieProfile extends Component {
@@ -19,7 +19,9 @@ import {
     render() {
         return (
             <Modal animationType="slide" visible={this.props.modalVisible} transparent={true}>
-                <TouchableWithoutFeedback onPress={this.props.closeModal} style={style.modalHeader}/>
+                <TouchableWithoutFeedback onPress={this.props.closeModal}>
+                    <View style={style.modalHeader}/>
+                </TouchableWithoutFeedback>
                 <ScrollView style={{backgroundColor: 'white', height: '100%'}}>
                     <View style={{margin: 10}}>
                         <Button

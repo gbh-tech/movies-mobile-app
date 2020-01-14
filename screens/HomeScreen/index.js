@@ -11,11 +11,28 @@ class HomeScreen extends React.Component {
         sort: 'vote_average.desc',
         searchData: [],
         isSearching: false,
-        isLoading: true
+        isLoading: true,
+        searchBarVisible: false
     }
 
     componentDidMount() {
         this.fetchMovies();
+    }
+
+    showSearchBar = () => {
+        this.setState({ searchBarVisible: true })
+    }
+
+    hideSearchBar = () => {
+        this.setState({ searchBarVisible: false })
+    }
+
+    toggleSearchBar = () => {
+        this.setState(
+            (prevState) => {
+                return {searchBarVisible: !prevState.searchBarVisible}
+            }
+        )
     }
     
     fetchMovies = async () => {
@@ -69,7 +86,9 @@ class HomeScreen extends React.Component {
         const { data } = this.props;
         return (
             <>
-                <Header title="Main menu" />
+                <Header title="Main menu" 
+                    toggleSearchBar={this.toggleSearchBar}
+                />
                 <MovieList 
                     data={data}
                     fetchMovies={this.fetchMovies}
@@ -83,6 +102,9 @@ class HomeScreen extends React.Component {
                     toggleSearchScreenVisibility={this.handleSearchScreenVisibility}
                     isFavorite={this.isFavorite}
                     isLoading={this.state.isLoading}
+                    searchBarVisible={this.state.searchBarVisible}
+                    showSearchBar={this.showSearchBar}
+                    hideSearchBar={this.hideSearchBar}
                 />
             </>
         )

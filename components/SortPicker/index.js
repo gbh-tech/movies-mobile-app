@@ -13,10 +13,6 @@ import {
 class SortPicker extends React.Component {
     sortOptions = this.props.sortOptions;
 
-    componentDidUpdate() {
-        console.log(this.state);
-    }
-
     onSortPress = () => {
         if (Platform.OS === 'ios') {
             ActionSheetIOS.showActionSheetWithOptions(
@@ -63,7 +59,7 @@ class SortPicker extends React.Component {
                 {
                     this.sortOptions.map((option) => {
                         if (option.label !== "Cancel") {
-                            return <Picker.Item label={`Sort ${option.label}`} value={option.by}/>
+                            return <Picker.Item label={`Sort ${option.label}`}/>
                         }
                     })
                 }

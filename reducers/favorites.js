@@ -7,7 +7,7 @@ import {
 const initialState = {
     favorites: [],
     searchResults: [],
-    sortMode: 'Sort Default (by Rating)'
+    sortMode: 'Default (By Rating)'
 }
 
 const favorites = (state = initialState, action) => {

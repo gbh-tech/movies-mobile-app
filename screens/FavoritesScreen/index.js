@@ -68,6 +68,9 @@ class FavoritesScreen extends React.Component {
                     toggleFavorite={this.props.toggleFavorite} 
                     setSorting={this.handleSort}
                     sortMode={this.props.sortMode}
+                    sortOptions={sortOptions}
+                    toggleSearchScreenVisibility={this.handleSearchScreenVisibility}
+                    onSearchChange={this.handleSearchChange}
                     isFavorite={this.isFavorite}
                     searchBarVisible={this.state.searchBarVisible}
                     showSearchBar={this.showSearchBar}

@@ -7,7 +7,7 @@ import {
 const initialState = {
     favorites: [],
     searchResults: [],
-    sortMode: 'Sort Default (by Rating)'
+    sortMode: 'Default (By Rating)'
 }
 
 const favorites = (state = initialState, action) => {
@@ -44,7 +44,7 @@ const favorites = (state = initialState, action) => {
             return ({
                 ...state,
                 favorites: data,
-                sortMode: action.payload.name
+                sortMode: action.payload.label
             })
         default:
             return state;

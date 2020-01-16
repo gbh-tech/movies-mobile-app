@@ -4,38 +4,74 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { 
     Text, 
     ActionSheetIOS,
-    TouchableOpacity
+    TouchableOpacity,
+    View,
+    Platform,
+    Picker
 } from "react-native";
 
 class SortPicker extends React.Component {
+    sortOptions = this.props.sortOptions;
+
     onSortPress = () => {
-        const sortOptions = this.props.sortOptions;
-        ActionSheetIOS.showActionSheetWithOptions(
-            {
-                options: sortOptions.map(sortOption => sortOption.name),
-                cancelButtonIndex: 0
-            },
-            (buttonIndex) => {
-                if (buttonIndex != 0) {
-                    this.setState({ sortingBy: sortOptions[buttonIndex].name }, 
-                        () => this.props.setSorting(sortOptions[buttonIndex])
-                    )
+        if (Platform.OS === 'ios') {
+            ActionSheetIOS.showActionSheetWithOptions(
+                {
+                    options: this.sortOptions.map(sortOption => sortOption.label),
+                    cancelButtonIndex: 0
+                },
+                (buttonIndex) => {
+                    if (buttonIndex != 0) {
+                        this.setState({ sortingBy: this.sortOptions[buttonIndex].label }, 
+                            () => this.props.setSorting(this.sortOptions[buttonIndex])
+                        )
+                    }
                 }
-            }
-        );
+            );
+        }
     };
 
-    render() {
-        return (
-            <TouchableOpacity
-                style={style.sortPicker}
-                onPress={this.onSortPress}
-            >
+    renderIosPicker = () => (
+        <TouchableOpacity
+            style={style.sortPicker}
+            onPress={this.onSortPress}
+        >
+            <View>
                 <Text style={style.sortText}>
                     <Icon name="md-funnel" size={24} />
                     Sort {this.props.sortMode}
                 </Text>
-            </TouchableOpacity>
+            </View>
+        </TouchableOpacity>
+    )
+
+    renderAndroidPicker = () => (
+        <Picker
+            selectedValue={this.props.sortMode}
+            style={{height: 50, color: 'rgb(28,126,215)'}}
+            onValueChange={(itemValue, itemIndex) => (
+                this.setState({sortingBy: this.sortOptions[itemIndex + 1].label },
+                    () => {
+                        return this.props.setSorting(this.sortOptions[itemIndex + 1])
+                    }
+                )
+            )}>
+                {
+                    this.sortOptions.map((option) => {
+                        if (option.label !== "Cancel") {
+                            return <Picker.Item label={`Sort ${option.label}`}/>
+                        }
+                    })
+                }
+        </Picker>
+    )
+    
+
+    render() {
+        return (
+            Platform.OS === 'ios' 
+            ? this.renderIosPicker()
+            : this.renderAndroidPicker()
         );
     }
 }

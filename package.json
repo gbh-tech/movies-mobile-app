@@ -6,7 +6,11 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/App/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
+  },
+  "rnpm": {
+    "assets": ["./assets/fonts"]
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.3",

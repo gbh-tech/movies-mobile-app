@@ -1,7 +1,7 @@
 const initialState = {
     data: [],
     pages: 0,
-    sortMode: 'Default (By Popularity)'
+    sortMode: 'Default (By Rating)'
 }
 
 const home = (state = initialState, action) => {
@@ -23,7 +23,7 @@ const home = (state = initialState, action) => {
         case 'SET_SORTING':
             return ({
                 ...state,
-                sortMode: action.payload.name
+                sortMode: action.payload.label
             })
         default:
             return state;

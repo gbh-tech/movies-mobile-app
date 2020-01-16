@@ -1,9 +1,9 @@
 
 const sortOptions = [
-    {name: 'Cancel'},
-    {name: 'Default (By Rating)', sortPath: 'vote_average.desc'},
-    {name: 'By Release Date', sortPath: 'release_date.desc'},
-    {name: 'By Name', sortPath: 'original_title.asc'}
+    {label: 'Cancel'},
+    {label: 'Default (By Rating)', sortPath: 'vote_average.desc'},
+    {label: 'By Release Date', sortPath: 'release_date.desc'},
+    {label: 'By Name', sortPath: 'original_title.asc'}
 ];
 
 export default sortOptions;

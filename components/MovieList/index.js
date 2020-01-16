@@ -31,10 +31,10 @@ class MovieList extends React.Component {
     _onScroll = (event) => {
         const scrollPosition = event.nativeEvent.contentOffset.y;
         if (scrollPosition < -60) {
-            this.setState({ searchBarVisible: true });
+            this.props.showSearchBar();
         }
         if (scrollPosition > 40) {
-            this.setState({ searchBarVisible: false});
+            this.props.hideSearchBar()
         }
     }
     
@@ -62,7 +62,7 @@ class MovieList extends React.Component {
     render() {
         return (
             <SafeAreaView>
-                { this.state.searchBarVisible && (
+                { this.props.searchBarVisible && (
                     <View>
                         <SearchBar 
                             toggleSearchScreenVisibility={this.props.toggleSearchScreenVisibility}

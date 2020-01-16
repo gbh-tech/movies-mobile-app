@@ -18,7 +18,12 @@ import {
 
     render() {
         return (
-            <Modal animationType="slide" visible={this.props.modalVisible} transparent={true}>
+            <Modal 
+                animationType="slide" 
+                visible={this.props.modalVisible} 
+                transparent={true} 
+                onRequestClose={() => this.props.closeModal()}
+            >
                 <TouchableWithoutFeedback onPress={this.props.closeModal}>
                     <View style={style.modalHeader}/>
                 </TouchableWithoutFeedback>

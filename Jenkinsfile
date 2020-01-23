@@ -25,6 +25,7 @@ pipeline {
       steps {
         script {
           jiraId = getTicketIdFromBranchName("${GIT_BRANCH}");
+          sh 'printenv'
           sh(
             label: "Setting android environment",
             script: """
@@ -71,6 +72,7 @@ pipeline {
     }
 
     stage("Validation") {
+      stage("Initialize") {
       agent {
         label 'mobile'
       }

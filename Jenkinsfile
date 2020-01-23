@@ -58,7 +58,7 @@ pipeline {
             npm i
             cd android
             ./gradlew assembleRelease
-            cd ${apiPath}/android/app/build/outputs/apk/staging/release
+            cd ${apiPath}/android/app/build/outputs/apk/release
             mv *.apk ${TIMESTAMP}.apk
           """
         )

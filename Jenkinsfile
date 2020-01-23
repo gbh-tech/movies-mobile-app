@@ -58,14 +58,14 @@ pipeline {
             npm i
             cd android
             ./gradlew assembleRelease
-            cd ${ANDROID_REPO}/android/app/build/outputs/apk/staging/release
+            cd ${apiPath}/android/app/build/outputs/apk/staging/release
             mv *.apk ${TIMESTAMP}.apk
           """
         )
         sh(
           label: "Uploading to S3",
           script: """
-            cd ${ANDROID_REPO}/android/app/build/outputs/apk/staging/release
+            cd ${apiPath}/android/app/build/outputs/apk/staging/release
             aws s3 cp ${TIMESTAMP}.apk ${S3_REPO}/android/${TIMESTAMP}.apk --acl public-read
           """
         )

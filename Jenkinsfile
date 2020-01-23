@@ -1,4 +1,4 @@
-def TIMESTAMP = Calendar.getInstance().getTime().format('YYYYMMdd-hhmm')
+def timeStamp = Calendar.getInstance().getTime().format('YYYYMMdd-hhmm')
 
 pipeline {
 
@@ -59,14 +59,14 @@ pipeline {
             cd android
             ./gradlew assembleRelease
             cd ${apiPath}/android/app/build/outputs/apk/release
-            mv *.apk ${TIMESTAMP}.apk
+            mv *.apk ${timeStamp}.apk
           """
         )
         sh(
           label: "Uploading to S3",
           script: """
             cd ${apiPath}/android/app/build/outputs/apk/release
-            aws s3 cp ${TIMESTAMP}.apk ${S3_REPO}/android/${TIMESTAMP}.apk --acl public-read
+            aws s3 cp ${timeStamp}.apk ${S3repo}/android/${timeStamp}.apk --acl public-read
           """
         )
       }
@@ -83,7 +83,7 @@ pipeline {
             curl \
               -H "Content-Type: application/json" \
               -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3_URL}/android/${TIMESTAMP}.apk"}' \
+              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3url}/android/${timeStamp}.apk"}' \
               -X POST \
               https://kanon-api.gbhlabs.net/api/reviewapps
           """

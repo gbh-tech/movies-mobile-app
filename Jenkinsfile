@@ -84,25 +84,14 @@ pipeline {
               -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3url}/android/${timeStamp}.apk"}' \
               -X POST \
               https://kanon-api.gbhlabs.net/api/reviewapps
+            curl \
+              -H "Content-Type: application/json" \
+              -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
+              -X POST \
+              https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
+              label: "Posting ReviewApp status to Kanon...",
           """
         )
-        sh(
-        label: "Posting ReviewApp status to Kanon...",
-        script: """
-          curl \
-            -H "Content-Type: application/json" \
-            -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-            -X POST \
-            https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
-            label: "Posting ReviewApp status to Kanon...",
-          curl \
-            -H "Content-Type: application/json" \
-            -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-            -X POST \
-            https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
-        """
-        )
-
       }
     }
   }

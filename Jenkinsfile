@@ -24,22 +24,21 @@ pipeline {
       }
       steps {
         script {
-          jiraId = getTicketIdFromBranchName("${GIT_BRANCH}");
-          sh 'printenv'
+          jiraId = getTicketIdFromBranchName("${env.CHANGE_BRANCH}");
           sh(
             label: "Setting android environment",
             script: """
               cd ${apiPath}
               git checkout .
               git fetch
-              git pull origin ${GIT_BRANCH}
+              git pull origin ${env.CHANGE_BRANCH}
             """
           )
         }
       }
       post {
         success {
-          office365ConnectorSend color: "05b222", message: "CI pipeline for ${GIT_BRANCH} initialized. ReviewApp will be available at: https://kanon.gbhlabs.net/.", status: "STARTED", webhookUrl: "${officeWebhookUrl}"
+          office365ConnectorSend color: "05b222", message: "CI pipeline for ${env.CHANGE_BRANCH} initialized. ReviewApp will be available at: https://kanon.gbhlabs.net/.", status: "STARTED", webhookUrl: "${officeWebhookUrl}"
         }
       }
     }
@@ -83,7 +82,7 @@ pipeline {
             curl \
               -H "Content-Type: application/json" \
               -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-              -d '{"branch": "${GIT_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3_URL}/android/${TIMESTAMP}.apk"}' \
+              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3_URL}/android/${TIMESTAMP}.apk"}' \
               -X POST \
               https://kanon-api.gbhlabs.net/api/reviewapps
           """
@@ -97,10 +96,10 @@ pipeline {
   }
   post {
     failure {
-      office365ConnectorSend color: "f40909", message: "CI pipeline for ${GIT_BRANCH} failed. Please check the logs for more information.", status: "FAILED", webhookUrl: "${officeWebhookUrl}"
+      office365ConnectorSend color: "f40909", message: "CI pipeline for ${env.CHANGE_BRANCH} failed. Please check the logs for more information.", status: "FAILED", webhookUrl: "${officeWebhookUrl}"
     }
     success {
-      office365ConnectorSend color:"50bddf", message: "CI pipeline for ${GIT_BRANCH} completed succesfully.", status:"SUCCESS", webhookUrl:"${officeWebhookUrl}"
+      office365ConnectorSend color:"50bddf", message: "CI pipeline for ${env.CHANGE_BRANCH} completed succesfully.", status:"SUCCESS", webhookUrl:"${officeWebhookUrl}"
     }
     always {
       sh(
@@ -110,7 +109,7 @@ pipeline {
             -H "Content-Type: application/json" \
             -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
             -X POST \
-            https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${GIT_BRANCH}
+            https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
         """
       )
     }

@@ -89,8 +89,10 @@ pipeline {
               -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
               -X POST \
               https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
-              label: "Posting ReviewApp status to Kanon...",
           """
+        )
+        sh(
+          
         )
       }
     }

@@ -2,6 +2,11 @@ def TIMESTAMP = Calendar.getInstance().getTime().format('YYYYMMdd-hhmm')
 
 pipeline {
 
+  options {
+    disableConcurrentBuilds()
+    parallelsAlwaysFailFast()
+  }
+
   environment {
     ANDROID_HOME = '/home/ubuntu/android-sdk'
     S3repo = 's3://gbh-mobile/demo-project'

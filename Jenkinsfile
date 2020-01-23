@@ -2,6 +2,10 @@ def TIMESTAMP = Calendar.getInstance().getTime().format('YYYYMMdd-hhmm')
 
 pipeline {
 
+  agent {
+    label 'mobile'
+  }
+  
   options {
     disableConcurrentBuilds()
     parallelsAlwaysFailFast()

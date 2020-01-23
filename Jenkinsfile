@@ -20,7 +20,7 @@ pipeline {
   stages {
     stage("Environment") {
       agent {
-        label 'movies'
+        label 'mobile'
       }
       steps {
         script {
@@ -45,7 +45,7 @@ pipeline {
 
     stage("Initialize") {
       agent {
-        label 'movies'
+        label 'mobile'
       }
       steps {
         echo "This step will build the app."
@@ -71,6 +71,9 @@ pipeline {
     }
 
     stage("Validation") {
+      agent {
+        label 'mobile'
+      }
       steps {
         sh(
           label: "Posting ReviewApp data to Kanon...",
@@ -90,7 +93,6 @@ pipeline {
       }
     }
   }
-
   post {
     failure {
       office365ConnectorSend color: "f40909", message: "CI pipeline for ${GIT_BRANCH} failed. Please check the logs for more information.", status: "FAILED", webhookUrl: "${officeWebhookUrl}"

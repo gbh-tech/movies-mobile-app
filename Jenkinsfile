@@ -2,9 +2,7 @@ def timeStamp = Calendar.getInstance().getTime().format('YYYYMMdd-hhmm')
 
 pipeline {
 
-  agent {
-    label 'mobile'
-  }
+  agent none
   
   options {
     disableConcurrentBuilds()

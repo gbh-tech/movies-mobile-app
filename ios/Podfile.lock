@@ -217,9 +217,9 @@ PODS:
     - React-cxxreact (= 0.61.3)
     - React-jsi (= 0.61.3)
     - ReactCommon/jscallinvoker (= 0.61.3)
-  - RNCAsyncStorage (1.6.3):
+  - RNCAsyncStorage (1.7.1):
     - React
-  - RNGestureHandler (1.5.0):
+  - RNGestureHandler (1.5.3):
     - React
   - RNReanimated (1.4.0):
     - React
@@ -351,12 +351,12 @@ SPEC CHECKSUMS:
   React-RCTText: b8f895b94aa0e7778fef28d13f3d71eed4a10c3d
   React-RCTVibration: 262588c97551b0b1c675468cda857466ba5af18f
   ReactCommon: c2c63d9290b422ca6ad5b3663073a015dd892ae9
-  RNCAsyncStorage: 6b57de0f6cb0dcfd17521af1681fa39001d3efff
-  RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
+  RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
+  RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 02036f6383c0008edb7ef0773a0e6beb6ce82bd1
 
-PODFILE CHECKSUM: 5d1bfe023faf283f8475ce5b9f1633360bef49ca
+PODFILE CHECKSUM: 0b4062f05d9a5d207914b0786110c205608078e9
 
 COCOAPODS: 1.8.4

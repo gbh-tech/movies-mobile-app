@@ -91,9 +91,6 @@ pipeline {
               https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
           """
         )
-        sh(
-          
-        )
       }
     }
   }

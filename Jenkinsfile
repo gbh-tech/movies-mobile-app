@@ -72,46 +72,46 @@ pipeline {
 
     stage("Validation") {
       stage("Initialize") {
-      agent {
-        label 'mobile'
+        agent {
+          label 'mobile'
+        }
+        steps {
+          sh(
+            label: "Posting ReviewApp data to Kanon...",
+            script: """
+              curl \
+                -H "Content-Type: application/json" \
+                -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
+                -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3_URL}/android/${TIMESTAMP}.apk"}' \
+                -X POST \
+                https://kanon-api.gbhlabs.net/api/reviewapps
+            """
+          )
+          prettyPrint("ReviewApp URL: http://${hostPublic}")
+          echo getTaskLink(GIT_BRANCH)
+          input message: "Validation finished?"
+        }
       }
-      steps {
+    }
+    post {
+      failure {
+        office365ConnectorSend color: "f40909", message: "CI pipeline for ${env.CHANGE_BRANCH} failed. Please check the logs for more information.", status: "FAILED", webhookUrl: "${officeWebhookUrl}"
+      }
+      success {
+        office365ConnectorSend color:"50bddf", message: "CI pipeline for ${env.CHANGE_BRANCH} completed succesfully.", status:"SUCCESS", webhookUrl:"${officeWebhookUrl}"
+      }
+      always {
         sh(
-          label: "Posting ReviewApp data to Kanon...",
+          label: "Posting ReviewApp status to Kanon...",
           script: """
             curl \
               -H "Content-Type: application/json" \
               -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3_URL}/android/${TIMESTAMP}.apk"}' \
               -X POST \
-              https://kanon-api.gbhlabs.net/api/reviewapps
+              https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
           """
         )
-
-        prettyPrint("ReviewApp URL: http://${hostPublic}")
-        echo getTaskLink(GIT_BRANCH)
-        input message: "Validation finished?"
       }
-    }
-  }
-  post {
-    failure {
-      office365ConnectorSend color: "f40909", message: "CI pipeline for ${env.CHANGE_BRANCH} failed. Please check the logs for more information.", status: "FAILED", webhookUrl: "${officeWebhookUrl}"
-    }
-    success {
-      office365ConnectorSend color:"50bddf", message: "CI pipeline for ${env.CHANGE_BRANCH} completed succesfully.", status:"SUCCESS", webhookUrl:"${officeWebhookUrl}"
-    }
-    always {
-      sh(
-        label: "Posting ReviewApp status to Kanon...",
-        script: """
-          curl \
-            -H "Content-Type: application/json" \
-            -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-            -X POST \
-            https://kanon-api.gbhlabs.net/api/reviewapps/deactivation?build=${BUILD_NUMBER}\\&branch=${env.CHANGE_BRANCH}
-        """
-      )
     }
   }
 }

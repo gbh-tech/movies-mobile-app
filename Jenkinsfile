@@ -102,6 +102,7 @@ pipeline {
       office365ConnectorSend color:"50bddf", message: "CI pipeline for ${env.CHANGE_BRANCH} completed succesfully.", status:"SUCCESS", webhookUrl:"${officeWebhookUrl}"
     }
     always {
+      sh "rm ${apiPath}/android/app/build/outputs/apk/release/*"
       sh(
         label: "Posting ReviewApp status to Kanon...",
         script: """

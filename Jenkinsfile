@@ -65,7 +65,7 @@ pipeline {
         sh(
           label: "Uploading to S3",
           script: """
-            cd ${apiPath}/android/app/build/outputs/apk/staging/release
+            cd ${apiPath}/android/app/build/outputs/apk/release
             aws s3 cp ${TIMESTAMP}.apk ${S3_REPO}/android/${TIMESTAMP}.apk --acl public-read
           """
         )

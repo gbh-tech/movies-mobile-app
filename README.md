@@ -2,7 +2,7 @@
 
 This repository contains a mobile application made with React-Native. It allows user to know the best movies in the whole world.
 
-# Installation :wrench:
+## Installation :wrench:
 
 Install node modules with npm.
 ``` 
@@ -31,9 +31,9 @@ or
 ```
 npm run android
 ```
-# Building app :hammer:
+## Building app :hammer:
 
-## Build IPA for iOS
+### Build IPA for iOS
 
 For building an IPA, you need: 
 - Access to the certificates repository.
@@ -45,11 +45,11 @@ fastlane sigh --adhoc
 fastlane pipeline
 ```
 
-## Build APK for android
+### Build APK for android
 
 TODO
 
-# Known issues :warning:
+## Known issues :warning:
 
 ```shell
 error Unable to resolve module `Dimensions` from `node_modules/react-native-viewport-units/viewport-units.js`: Dimensions could not be found within the project.

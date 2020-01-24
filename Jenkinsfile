@@ -103,7 +103,7 @@ pipeline {
               script: """
                 cd ${iOSPath}/ios
                 fastlane pipeline
-                cp Amadita*.ipa ${revision}-${timeStamp}.ipa
+                cp *.ipa ${revision}-${timeStamp}.ipa
                 cat app-ipa-template.plist.template | sed -e \"s/timeStamp/${timeStamp}/\" -e \"s/revision/${revision}/\" > ${plist}
                 cat index.html | sed -e \"s/ITUNES_LINK/${plist}/\" > index.${timeStamp}.html
               """

@@ -15,7 +15,7 @@ pipeline {
     S3url = 'https://gbh-mobile.s3-us-west-2.amazonaws.com/demo-project'
     apiPath = "/srv/movies-mobile-app"
     officeWebhookUrl = "https://outlook.office.com/webhook/fd2e0e97-97df-4057-a9df-ff2e0c66196a@64aa16ab-5980-47d5-a944-3f8cc9bbdfa2/IncomingWebhook/6c2ab55478d146efbe4041db69f97108/217bfa4b-9515-4221-b5b7-6858ebd6d4b5"
-    iOSPath = '/Users/gbh/Documents/movies-mobile-app'
+    iOSPath = '/Users/gbh/Documents/movies/movies-mobile-app'
     plist = "${timeStamp}.plist"
     version = "1.0"
   }

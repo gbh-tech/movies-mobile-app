@@ -17,7 +17,7 @@ pipeline {
     officeWebhookUrl = "https://outlook.office.com/webhook/fd2e0e97-97df-4057-a9df-ff2e0c66196a@64aa16ab-5980-47d5-a944-3f8cc9bbdfa2/IncomingWebhook/6c2ab55478d146efbe4041db69f97108/217bfa4b-9515-4221-b5b7-6858ebd6d4b5"
     iOSPath = '/Users/gbh/Documents/movies-mobile-app'
     plist = "${timeStamp}.plist"
-    version = "2."
+    version = "1.0"
   }
 
   stages {
@@ -79,12 +79,6 @@ pipeline {
             label 'iOS'
           }
           steps {
-            script {
-              revision = sh(
-                script: "/usr/libexec/PlistBuddy -c 'Print CFBundleversion' '${iOSPath}/ios/App/Info.plist'",
-                returnStdout: true
-              ).trim()
-            }
             sh(
               label: "Setting up iOS environment",
               script: """
@@ -103,8 +97,8 @@ pipeline {
               script: """
                 cd ${iOSPath}/ios
                 fastlane pipeline
-                cp *.ipa ${revision}-${timeStamp}.ipa
-                cat app-ipa-template.plist.template | sed -e \"s/timeStamp/${timeStamp}/\" -e \"s/revision/${revision}/\" > ${plist}
+                cp *.ipa ${timeStamp}.ipa
+                cat app-ipa-template.plist.template | sed -e \"s/timeStamp/${timeStamp}/\" > ${plist}
                 cat index.html | sed -e \"s/ITUNES_LINK/${plist}/\" > index.${timeStamp}.html
               """
             )
@@ -112,7 +106,7 @@ pipeline {
               label: "Uploading to S3",
               script: """
                 cd ${iOSPath}/ios
-                aws s3 cp ${revision}-${timeStamp}.ipa ${S3repo}/ios/${revision}-${timeStamp}.ipa --acl public-read
+                aws s3 cp ${timeStamp}.ipa ${S3repo}/ios/${timeStamp}.ipa --acl public-read
                 aws s3 cp index.${timeStamp}.html ${S3repo}/ios/index.${timeStamp}.html --acl public-read
                 aws s3 cp ${timeStamp}.plist ${S3repo}/ios/${timeStamp}.plist --acl public-read
               """

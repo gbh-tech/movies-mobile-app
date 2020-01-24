@@ -23,6 +23,10 @@ Build the main.jsbundle file.
 ```
 npm run build:ios
 ```
+or
+```
+npm run build:android
+```
 Then now you can run the app in development.
 ```
 npm run ios
@@ -38,7 +42,7 @@ npm run android
 For building an IPA, you need: 
 - Access to the certificates repository.
 
-Open iOS project in xcode > File > Workspace settings... > Change Build system to "Legacy" and run the following:
+Before start the building process, **open iOS project on xcode > File > Workspace settings... > Change Build system to "Legacy"** and run the following:
 ```
 cd ios
 fastlane sigh --adhoc
@@ -56,7 +60,7 @@ error Unable to resolve module `Dimensions` from `node_modules/react-native-view
 ```
 To solve this, go to the following route:
 ```
-node_modules > react-native-viewport-units > viewport-units.js
+./node_modules/react-native-viewport-units/viewport-units.js
 ```
 And replace the file with this
 ```javascript

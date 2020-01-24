@@ -1,0 +1,37 @@
+fastlane_version "2.140.0"
+
+default_platform(:ios)
+
+platform :ios do  
+  lane :bump do |options|
+  increment_version_number(version_number: options[:version])
+  increment_build_number(build_number: options[:build])
+end
+  
+#Here we define the properties of the app
+  private_lane :match_stag do |options|
+  match(
+    type: "adhoc",
+    app_identifier: "com.gbh.movies", 
+    username: "devs@gbh.com.do"
+  end
+  
+# This is the command that we will run. This will take the propiertieswe
+# defined previously and build the ipa.  
+  lane :pipeline do |options|
+    match_stag
+    build_app( 
+      scheme: "App", 
+      configuration: "StagRelease",
+    )
+    gym(
+    ...
+    export_method: 'adhoc',
+    export_options: {
+      provisioningProfiles: {
+        "com.gbh.movies": "com.gbh.movies AdHoc"
+      }
+    }
+  )
+  end
+end

@@ -81,7 +81,7 @@ pipeline {
           steps {
             script {
               revision = sh(
-                script: "/usr/libexec/PlistBuddy -c 'Print CFBundleversion' '${iOSPath}/Info.plist'",
+                script: "/usr/libexec/PlistBuddy -c 'Print CFBundleversion' '${iOSPath}/ios/App/Info.plist'",
                 returnStdout: true
               ).trim()
             }

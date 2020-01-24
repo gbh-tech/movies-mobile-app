@@ -156,8 +156,6 @@ pipeline {
   }
 }
 
- * Get the ticket ID using the branch name.
- */
 def getTicketIdFromBranchName(String branchName) {
   return branchName.findAll(/(DP-[0-9]+)/)[0];
 }

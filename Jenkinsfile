@@ -15,6 +15,9 @@ pipeline {
     S3url = 'https://gbh-mobile.s3-us-west-2.amazonaws.com/demo-project'
     apiPath = "/srv/movies-mobile-app"
     officeWebhookUrl = "https://outlook.office.com/webhook/fd2e0e97-97df-4057-a9df-ff2e0c66196a@64aa16ab-5980-47d5-a944-3f8cc9bbdfa2/IncomingWebhook/6c2ab55478d146efbe4041db69f97108/217bfa4b-9515-4221-b5b7-6858ebd6d4b5"
+    iOSPath = '/Users/gbh/Documents/movies-mobile-app'
+    plist = "${timeStamp}.plist"
+    version = "2."
   }
 
   stages {
@@ -42,31 +45,80 @@ pipeline {
         }
       }
     }
-
-    stage("Initialize") {
-      agent {
-        label 'mobile'
-      }
-      steps {
-        echo "This step will build the app."
-        sh(
-          label: "Setting android environment",
-          script: """
-            cd ${apiPath}
-            npm i
-            cd android
-            ./gradlew assembleRelease
-            cd ${apiPath}/android/app/build/outputs/apk/release
-            mv *.apk ${timeStamp}.apk
-          """
-        )
-        sh(
-          label: "Uploading to S3",
-          script: """
-            cd ${apiPath}/android/app/build/outputs/apk/release
-            aws s3 cp ${timeStamp}.apk ${S3repo}/android/${timeStamp}.apk --acl public-read
-          """
-        )
+    stage ('mobile-build') {
+      parallel {
+        stage("Android-build") {
+          agent {
+            label 'mobile'
+          }
+          steps {
+            echo "This step will build the app."
+            sh(
+              label: "Setting android environment",
+              script: """
+                cd ${apiPath}
+                npm i
+                cd android
+                ./gradlew assembleRelease
+                cd ${apiPath}/android/app/build/outputs/apk/release
+                mv *.apk ${timeStamp}.apk
+              """
+            )
+            sh(
+              label: "Uploading to S3",
+              script: """
+                cd ${apiPath}/android/app/build/outputs/apk/release
+                aws s3 cp ${timeStamp}.apk ${S3repo}/android/${timeStamp}.apk --acl public-read
+                sudo rm *.apk
+              """
+            )
+          }
+        }
+        stage("iOS-build") {
+          agent {
+            label 'iOS'
+          }
+          steps {
+            script {
+              revision = sh(
+                script: "/usr/libexec/PlistBuddy -c 'Print CFBundleversion' '${APP_PATH}/Info.plist'",
+                returnStdout: true
+              ).trim()
+            }
+            sh(
+              label: "Setting up iOS environment",
+              script: """
+                cd ${iOSPath}
+                git checkout .
+                git fetch
+                git checkout ${env.CHANGE_BRANCH}
+                git pull origin ${env.CHANGE_BRANCH}
+                yarn install
+                cd ${iOSPath}/ios
+                pod install
+              """
+            )
+            sh(
+              label: "Building iOS IPA",
+              script: """
+                cd ${iOSPath}/ios
+                fastlane pipeline
+                cp Amadita*.ipa ${revision}-${timeStamp}.ipa
+                cat app-ipa-template.plist.template | sed -e \"s/timeStamp/${timeStamp}/\" -e \"s/revision/${revision}/\" > ${plist}
+                cat index.html | sed -e \"s/ITUNES_LINK/${plist}/\" > index.${timeStamp}.html
+              """
+            )
+            sh(
+              label: "Uploading to S3",
+              script: """
+                cd ${iOSPath}/ios
+                aws s3 cp ${revision}-${timeStamp}.ipa ${S3repo}/ios/${revision}-${timeStamp}.ipa --acl public-read
+                aws s3 cp index.${timeStamp}.html ${S3repo}/ios/index.${timeStamp}.html --acl public-read
+                aws s3 cp ${timeStamp}.plist ${S3repo}/ios/${timeStamp}.plist --acl public-read
+              """
+            )
+          }
+        }
       }
     }
 
@@ -81,7 +133,7 @@ pipeline {
             curl \
               -H "Content-Type: application/json" \
               -H "authToken: as5uNvV5bKAa4Bzg24Bc" \
-              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3url}/android/${timeStamp}.apk"}' \
+              -d '{"branch": "${env.CHANGE_BRANCH}", "apiURL": "https://api.themoviedb.org/3", "jiraIssueKey": "${jiraId}", "build": "${BUILD_NUMBER}", "androidAppLink": "${S3url}/android/${timeStamp}.apk", "iosAppLink": "${S3url}/ios/index.${TIMESTAMP}.html"}' \
               -X POST \
               https://kanon-api.gbhlabs.net/api/reviewapps
             curl \
@@ -104,44 +156,6 @@ pipeline {
   }
 }
 
-
-/*
- * Gets the public DNS name of the provisioned instance used to run this pipeline.
- * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-instance-addressing.html
- */
-def getHostName() {
-  metadataUrl = "http://169.254.169.254/latest/meta-data/public-hostname"
-
-  return sh(
-    label: "Fetching host URL...",
-    script: "curl ${metadataUrl}",
-    returnStdout: true
-  ).trim()
-}
-/*
- * Obtains the matching branch of another repository. This is used to fetch
- * a change that requires multiple repositories to be properly tested in
- * the continuous integration pipeline.
- */
-def getBranchForRepo(String repo, String branchToCheck, String defaultBranch) {
-  exists = sh(
-    label: "Checking if ${branchToCheck} exists on ${repo}.",
-    script: "git ls-remote --heads --exit-code ${repo} ${branchToCheck}.",
-    returnStatus: true
-  ) == 0
-
-  if (exists) {
-    return branchToCheck
-  }
-
-  if (defaultBranch == "master") {
-    return "master"
-  }
-
-  return defaultBranch
-}
-
-/*
  * Get the ticket ID using the branch name.
  */
 def getTicketIdFromBranchName(String branchName) {

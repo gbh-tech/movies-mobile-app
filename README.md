@@ -23,20 +23,20 @@ pod install
 
 - Open iOS project on xcode > File > Workspace settings... > Change Build system to "Legacy"
 
-4. Build the main.jsbundle file.
+4. Set up .env file
+```
+API_BASEURL='https://api.themoviedb.org/3'
+API_KEY=your key from TMDB
+API_IMAGES_BASEURL='http://image.tmdb.org/t/p/w500'
+```
+
+5. Build the main.jsbundle file.
 ```
 npm run build:ios
 ```
 or
 ```
 npm run build:android
-```
-
-5. Set up .env file
-```
-API_BASEURL='https://api.themoviedb.org/3'
-API_KEY=your key from TMDB
-API_IMAGES_BASEURL='http://image.tmdb.org/t/p/w500'
 ```
 
 Then now you can run the app in development.
@@ -47,6 +47,7 @@ or
 ```
 npm run android
 ```
+
 ## Building app :hammer:
 
 ### Build IPA for iOS

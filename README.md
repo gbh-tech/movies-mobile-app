@@ -19,7 +19,11 @@ cd ios
 pod install
 ```
 
-3. Build the main.jsbundle file.
+3. Change build system to Legacy:
+
+- Open iOS project on xcode > File > Workspace settings... > Change Build system to "Legacy"
+
+4. Build the main.jsbundle file.
 ```
 npm run build:ios
 ```
@@ -28,7 +32,7 @@ or
 npm run build:android
 ```
 
-4. Set up .env file
+5. Set up .env file
 ```
 API_BASEURL='https://api.themoviedb.org/3'
 API_KEY=your key from TMDB
@@ -50,7 +54,7 @@ npm run android
 For building an IPA, you need: 
 - Access to the certificates repository.
 
-Before start the building process, **open iOS project on xcode > File > Workspace settings... > Change Build system to "Legacy"** and run the following:
+Do the following:
 ```
 cd ios
 fastlane sigh --adhoc

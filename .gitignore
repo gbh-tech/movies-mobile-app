@@ -72,3 +72,4 @@ buck-out/
 *.mobileprovision
 */assets/
 npm-debug.log
+index.android.bundle

@@ -13,7 +13,8 @@ end
   match(
     type: "adhoc",
     app_identifier: "com.gbh.movies", 
-    username: "devs@gbh.com.do")
+    username: "devs@gbh.com.do",
+    team_id: "HLH44XH7ZG")
   end
   
 # This is the command that we will run. This will take the propiertieswe

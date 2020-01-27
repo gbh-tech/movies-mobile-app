@@ -96,6 +96,7 @@ pipeline {
               label: "Building iOS IPA",
               script: """
                 cd ${iOSPath}/ios
+                rm *.ipa
                 fastlane pipeline
                 cp *.ipa ${timeStamp}.ipa
                 cat app-ipa-template.plist.template | sed -e \"s/timeStamp/${timeStamp}/\" > ${plist}

@@ -10,7 +10,9 @@
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/App/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
   },
   "rnpm": {
-    "assets": ["./assets/fonts"]
+    "assets": [
+      "./assets/fonts"
+    ]
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.3",
@@ -22,7 +24,7 @@
     "react-native-gesture-handler": "^1.5.0",
     "react-native-reanimated": "^1.4.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-native-viewport-units": "0.0.5",
+    "react-native-viewport-units": "https://github.com/dfeliz/react-native-viewport-units.git#v1.1",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.10.3",
     "react-navigation-tabs": "^2.5.6",

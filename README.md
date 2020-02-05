@@ -5,12 +5,15 @@ This repository contains a mobile application made with React-Native. It allows 
 ## Installation :wrench:
 
 1. Install node modules with npm.
-``` 
+
+```bash
 npm install
 ```
-or with yarn
-```
-yarn 
+
+Or with yarn:
+
+```bash
+yarn
 ```
 
 2. Install pods.
@@ -52,7 +55,7 @@ npm run android
 
 ### Build IPA for iOS
 
-For building an IPA, you need: 
+For building an IPA, you need:
 - Access to the certificates repository.
 
 Do the following:
